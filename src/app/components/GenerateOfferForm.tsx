@@ -27,7 +27,7 @@ export const GenerateOfferForm = ({
     categories[0].id
   );
   const [subCategorySelected, setSubCategorySelected] = useState<string>("");
-  const [subCategoryList, setSubCategoryList] = useState<[]>([]);
+  const [subCategoryList, setSubCategoryList] = useState([]) as any;
   const [skills, setSkillsList] = useState<[]>([]);
 
   const [salaryFrom, setSalaryRangeFrom] = useState<string>("");
