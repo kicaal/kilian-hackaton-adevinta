@@ -4,7 +4,7 @@ import { ChangeEventHandler, FC } from "react";
 
 interface TextAreaProps {
   value: string;
-  placeholder: string;
+  placeholder?: string;
   onChange: ChangeEventHandler<HTMLTextAreaElement>;
 }
 

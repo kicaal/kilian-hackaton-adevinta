@@ -1,20 +1,18 @@
 "use client";
 
 import { PageWrapper } from "@/app/components/PageWrapper";
-import { Button, Card, Dropdown, DropdownItem } from "@tremor/react";
-import { TextInput } from "@tremor/react";
-import { useRouter } from "next/navigation";
+import { TextArea } from "@/app/components/Textarea";
+import { OfferProvider, useOfferContext } from "@/app/hooks/OfferProvider";
+import { Button, Card } from "@tremor/react";
 
-export default function Description() {
-  const router = useRouter();
-
-  const value = "texto generado";
+export default async function Description() {
+  const { offer } = useOfferContext();
 
   return (
     <PageWrapper>
       <div className="p-12 transition">
         <Card className="max-w-6xl mx-auto">
-          <TextInput value={value} />
+          <TextArea value={offer} onChange={(value) => console.log(value)} />
           <Button loading={false} className="self-end">
             Corregir oferta
           </Button>

@@ -1,8 +1,3 @@
-CALLBACKURL https://kilian-hackaton-infojobs.netlify.app/
-
-Client ID: 35aba07bba964c3e9c05a95f30efaa89
-Client Secret: DFhYHxLEjSPS8B4YiaVh+Rtx+N8T7eY2E+vfyNDiEzvqk7HvHA
-
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

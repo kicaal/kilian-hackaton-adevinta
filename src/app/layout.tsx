@@ -1,15 +1,19 @@
+"use client";
+
 import "./globals.css";
 import { Titillium_Web } from "next/font/google";
+import { OfferProvider } from "./hooks/OfferProvider";
+import { Loading } from "./components/loading-description/loading";
 
 const titilium = Titillium_Web({
   weight: "400",
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "Hackaton infojobs",
-  description: "Generador ofertas",
-};
+// export const metadata = {
+//   title: "Hackaton infojobs",
+//   description: "Generador ofertas",
+// };
 
 export default function RootLayout({
   children,
@@ -18,7 +22,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={titilium.className}>{children}</body>
+      <body className={titilium.className}>
+        <OfferProvider>
+          <Loading />
+          {children}
+        </OfferProvider>
+      </body>
     </html>
   );
 }

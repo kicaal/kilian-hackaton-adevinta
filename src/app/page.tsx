@@ -16,7 +16,7 @@ export default function Home() {
         <div className="flex flex-col gap-10 self-center">
           <div className="flex flex-col items-center">
             <Image src="/hello.svg" width={150} height={150} alt="" />
-            <p className="text-center">Hola! Elige entre estas dos opciones</p>
+            <p className="text-center">Hola! Elige entre estas tres opciones</p>
           </div>
           <div className="flex gap-10 self-center">
             <Card

@@ -1,16 +1,20 @@
-const infoJobsToken = 'MzVhYmEwN2JiYTk2NGMzZTljMDVhOTVmMzBlZmFhODk6REZoWUh4TEVqU1BTOEI0WWlhVmgrUnR4K044VDdlWTJFK3ZmeU5EaUV6dnFrN0h2SEE='
+import { NextResponse } from "next/server"
 
-export const getSalaryRange = async () =>{
+const infoJobsToken = process.env.INFOJOBS_TOKEN ?? ''
+
+
+
+export async function GET(request: Request) {
   const res = await fetch(`https://api.infojobs.net/api/1/dictionary/salary-quantity`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Basic ${infoJobsToken}`,
   },
   })
-
-
+  
+  
   const data = await res.json()
-
-  return data
+  
+  return NextResponse.json(data);
 
 }

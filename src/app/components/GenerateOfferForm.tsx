@@ -11,33 +11,66 @@ import {
 } from "@tremor/react";
 import { TextInput } from "@tremor/react";
 import { TextArea } from "../components/Textarea";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useOfferContext } from "../hooks/OfferProvider";
 
-export const GenerateOfferForm = ({
-  categories,
-  salaryRange,
-}: {
-  categories: any;
-  salaryRange: any;
-}) => {
-  const router = useRouter();
+export const GenerateOfferForm = () => {
+  const {
+    categories,
+    salaryRange,
+    createOffer,
+    offerName,
+    setOfferName,
+    experience,
+    setExperience,
+    categorySelected,
+    setCategorySelected,
+    subCategorySelected,
+    setSubCategorySelected,
+    skillSelected,
+    setSkillSelected,
+    requirements,
+    setRequirements,
+    modality,
+    setModality,
+    socialBenefits,
+    setSocialBenefits,
+    salaryFrom,
+    setSalaryRangeFrom,
+    salaryUntil,
+    setSalaryRangeUntil,
+  } = useOfferContext();
 
-  const [categorySelected, setCategorySelected] = useState<string>(
-    categories[0].id
-  );
-  const [subCategorySelected, setSubCategorySelected] = useState<string>("");
   const [subCategoryList, setSubCategoryList] = useState([]) as any;
   const [skills, setSkillsList] = useState<[]>([]);
-
-  const [salaryFrom, setSalaryRangeFrom] = useState<string>("");
   const [salaryFromList, setSalaryFromList] = useState<[]>([]);
   const [salaryUntilList, setSalaryUntilList] = useState<[]>([]);
-  const [salaryUntil, setSalaryRangeUntil] = useState<string>("");
 
   useEffect(() => {
-    setSalaryFromList(salaryRange.filter((salary: any) => salary.order <= 500));
-    setSalaryUntilList(salaryRange.filter((salary: any) => salary.order > 500));
+    if (categories.length) {
+      setCategorySelected(categories[0].id);
+    }
+  }, [categories, setCategorySelected]);
+
+  useEffect(() => {
+    setSalaryFromList(salaryRange);
+  }, [salaryRange]);
+
+  useEffect(() => {
+    const salaryFromObject = salaryRange.find((salary: any) => {
+      if (salary.key === salaryFrom) {
+        return salary;
+      }
+    });
+    if (salaryFromObject) {
+      setSalaryUntilList(
+        salaryRange.filter(
+          (salary: any) => salary.order > salaryFromObject.order
+        )
+      );
+    } else {
+      setSalaryUntilList(salaryRange);
+    }
   }, [salaryRange, salaryFrom]);
 
   useEffect(() => {
@@ -47,8 +80,10 @@ export const GenerateOfferForm = ({
 
     if (category) {
       setSubCategoryList(category.subcategories);
+      setSubCategorySelected(category.subcategories[0].id);
+      setSkillSelected([]);
     }
-  }, [categories, categorySelected]);
+  }, [categories, categorySelected, setSubCategorySelected, setSkillSelected]);
 
   useEffect(() => {
     const subCategory = subCategoryList.find(
@@ -56,16 +91,29 @@ export const GenerateOfferForm = ({
     );
 
     if (subCategory) {
+      setSkillSelected([]);
       setSkillsList(subCategory.skills);
     }
-  }, [subCategoryList, subCategorySelected]);
+  }, [subCategoryList, subCategorySelected, setSkillSelected]);
 
   return (
     <div className="p-12 transition">
       <Card className="max-w-6xl mx-auto">
         <div className="flex flex-col gap-6 items-center justify-center">
-          <TextInput placeholder="Puesto de trabajo" />
-          <TextInput placeholder="Experiencia mínima" />
+          <div className="w-full">
+            <TextInput
+              onChange={(e) => setOfferName(e.target.value)}
+              value={offerName}
+              // error
+              // errorMessage="Obligatorio"
+              placeholder="Puesto de trabajo"
+            />
+          </div>
+          <TextInput
+            onChange={(e) => setExperience(e.target.value)}
+            value={experience}
+            placeholder="Experiencia mínima"
+          />
 
           <SelectBox
             value={categorySelected}
@@ -83,6 +131,7 @@ export const GenerateOfferForm = ({
             })}
           </SelectBox>
           <SelectBox
+            value={subCategorySelected}
             onValueChange={setSubCategorySelected}
             placeholder="Subcategoría"
           >
@@ -97,9 +146,8 @@ export const GenerateOfferForm = ({
             })}
           </SelectBox>
           <MultiSelectBox
-            onValueChange={(value) =>
-              console.log("The selected value is", value)
-            }
+            onValueChange={(value) => setSkillSelected(value)}
+            value={skillSelected}
             placeholder="Conocimientos requeridos"
           >
             {skills.map((skill: any) => {
@@ -113,9 +161,9 @@ export const GenerateOfferForm = ({
             })}
           </MultiSelectBox>
           <TextArea
-            value=""
+            value={requirements}
             placeholder="Requisitos específicos de la empresa"
-            onChange={() => console.log("hola")}
+            onChange={(e) => setRequirements(e.target.value)}
           />
           <Divider />
           <div className="flex gap-6 w-full">
@@ -151,22 +199,21 @@ export const GenerateOfferForm = ({
             </SelectBox>
           </div>
           <SelectBox
-            onValueChange={(value) =>
-              console.log("The selected value is", value)
-            }
+            onValueChange={setModality}
+            value={modality}
             placeholder="Modalidad"
           >
-            <SelectBoxItem value={"hybrid"} text="Hibrido" />
-            <SelectBoxItem value={"remote"} text="Remoto" />
-            <SelectBoxItem value={"office"} text="Oficina" />
+            <SelectBoxItem value={"Hibrido"} text="Hibrido" />
+            <SelectBoxItem value={"Remoto"} text="Remoto" />
+            <SelectBoxItem value={"Oficina"} text="Oficina" />
           </SelectBox>
           <TextArea
-            value=""
+            value={socialBenefits}
             placeholder="Beneficios sociales, seguro médico, plan de carrera adaptado..."
-            onChange={() => console.log("hola")}
+            onChange={(e) => setSocialBenefits(e.target.value)}
           />
           <Button
-            onClick={() => router.push("/generate-offer/loading-description")}
+            onClick={() => createOffer()}
             loading={false}
             className="self-end"
           >
