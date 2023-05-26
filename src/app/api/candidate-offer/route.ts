@@ -10,6 +10,7 @@ export async function GET(request: Request) {
       'Content-Type': 'application/json',
       Authorization: `Basic ${infoJobsToken}`,
   },
+  next: { revalidate: 60 }
   })
 
   const data = await res.json()

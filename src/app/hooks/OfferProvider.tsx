@@ -51,6 +51,7 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
       headers: {
         "Content-Type": "application/json",
       },
+      next: { revalidate: 60 },
     });
 
     setCategories(await res.json());
@@ -61,6 +62,7 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
       headers: {
         "Content-Type": "application/json",
       },
+      next: { revalidate: 60 },
     });
 
     setSalaryRange(await res.json());
@@ -131,6 +133,7 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
       headers: {
         "Content-Type": "application/json",
       },
+      next: { revalidate: 60 },
       body: JSON.stringify({
         value: prompt,
       }),
@@ -151,6 +154,7 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
       headers: {
         "Content-Type": "application/json",
       },
+      next: { revalidate: 60 },
       body: JSON.stringify({
         value: prompt,
       }),
