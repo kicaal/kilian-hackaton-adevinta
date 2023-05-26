@@ -2,7 +2,6 @@
 
 import { GenerateOfferForm } from "../components/GenerateOfferForm";
 import { PageWrapper } from "../components/PageWrapper";
-import { OfferProvider } from "../hooks/OfferProvider";
 
 export default function GenerateOffer() {
   // Al generar oferta la descripción la pueda editar,

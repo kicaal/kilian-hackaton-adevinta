@@ -3,57 +3,30 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const OfferContext = createContext<{
   offer: string;
-  offerName: string;
-  setOfferName: (value: string) => void;
-  experience: string;
-  setExperience: (value: string) => void;
-  categorySelected: string;
-  setCategorySelected: (value: string) => void;
-  subCategorySelected: string;
-  setSubCategorySelected: (value: string) => void;
-  skillSelected: string[];
-  setSkillSelected: (value: string[]) => void;
-  requirements: string;
-  setRequirements: (value: string) => void;
-  modality: string;
-  setModality: (value: string) => void;
-  socialBenefits: string;
-  setSocialBenefits: (value: string) => void;
-  salaryFrom: string;
-  setSalaryRangeFrom: (value: string) => void;
-  salaryUntil: string;
-  setSalaryRangeUntil: (value: string) => void;
   categories: any;
   salaryRange: any;
   createOffer: Function;
+  checkOffer: Function;
   setIsLoading: Function;
   isLoading: Boolean;
+  skillSelected: any;
+  setSkillSelected: Function;
+  offerReccomendations: {
+    score: number;
+    message: string;
+  };
+  setOffer: Function;
 }>({
   offer: "",
-  salaryFrom: "",
-  setSalaryRangeFrom: () => {},
-  salaryUntil: "",
-  setSalaryRangeUntil: () => {},
-  offerName: "",
-  setOfferName: () => {},
-  experience: "",
-  setExperience: () => {},
-  categorySelected: "",
-  setCategorySelected: () => {},
-  subCategorySelected: "",
-  setSubCategorySelected: () => {},
-  skillSelected: [],
-  setSkillSelected: () => {},
-  requirements: "",
-  setRequirements: () => {},
-  modality: "",
-  setModality: () => {},
-  socialBenefits: "",
-  setSocialBenefits: () => {},
+  offerReccomendations: { score: 0, message: "" },
   categories: [],
   salaryRange: [],
   createOffer: () => {},
+  checkOffer: () => {},
   setIsLoading: () => {},
+  skillSelected: [],
+  setSkillSelected: () => {},
+  setOffer: () => {},
   isLoading: false,
 });
 
@@ -62,17 +35,13 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [offer, setOffer] = useState<string>("");
 
+  const [offerReccomendations, setOfferRecommendations] = useState<{
+    score: number;
+    message: string;
+  }>({ score: 0, message: "" });
+
   const [isLoading, setIsLoading] = useState(false);
-  const [offerName, setOfferName] = useState<string>("");
-  const [experience, setExperience] = useState<string>("");
-  const [categorySelected, setCategorySelected] = useState<string>("");
-  const [subCategorySelected, setSubCategorySelected] = useState<string>("");
   const [skillSelected, setSkillSelected] = useState<string[]>([]);
-  const [requirements, setRequirements] = useState<string>("");
-  const [modality, setModality] = useState<string>("");
-  const [socialBenefits, setSocialBenefits] = useState<string>("");
-  const [salaryFrom, setSalaryRangeFrom] = useState<string>("");
-  const [salaryUntil, setSalaryRangeUntil] = useState<string>("");
 
   const [categories, setCategories] = useState([]);
   const [salaryRange, setSalaryRange] = useState([]);
@@ -108,13 +77,25 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
     loadData();
   }, []);
 
-  const createOffer = async () => {
+  const createOffer = async (data: any) => {
+    const {
+      offerName,
+      category: categorySelected,
+      experience,
+      subCategory: subCategorySelected,
+      requirements,
+      minSalaryRange,
+      maxSalaryRange,
+      modality,
+      socialBenefits,
+    } = data;
+
     const category: any = categories.find(
-      (category: any) => category.id === categorySelected
+      (category: any) => category.id === Number(categorySelected)
     );
 
     const subCategory: any = category?.subcategories.find(
-      (subCategory: any) => subCategory.id === subCategorySelected
+      (subCategory: any) => subCategory.id === Number(subCategorySelected)
     );
 
     const skills = subCategory?.skills.reduce((acc: string[], skill: any) => {
@@ -124,20 +105,25 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
       return acc;
     }, []);
 
-    const data = {
+    const selectedData = {
       offerName,
-      experience,
-      category: category.name,
-      skills: skills?.join(", "),
-      subCategory: subCategory.name,
-      requirements,
-      modality,
-      socialBenefits,
-      salaryFrom,
-      salaryUntil,
+      experience: `Experiencia mínima ${experience}`,
+      category: `categoría ${category.name}`,
+      subCategory: `especializado en ${subCategory.name}`,
+      skills: skills.length
+        ? `las skills mínimas requeridas son ${skills?.join(", ")}`
+        : "",
+      requirements: requirements
+        ? `los requerimientos específicos son ${requirements}`
+        : "",
+      salaryRange: `el rango salarial es de entre ${minSalaryRange}€ y ${maxSalaryRange}€`,
+      modality: `modalidad ${modality}`,
+      socialBenefits: socialBenefits
+        ? `como benificios sociales ${socialBenefits}`
+        : "",
     };
 
-    const prompt = `${data.offerName} Experiencia mínima ${data.experience} categoría ${data.category} especializado en ${data.subCategory}, las skills mínimas requeridas son ${data.skills}, los requerimientos específicos son ${requirements}  el rango salarial es de entre ${salaryFrom}€ y ${salaryUntil}€ modalidad ${data.modality} como benificios sociales ${data.socialBenefits}"`;
+    const prompt = `${selectedData.offerName} ${selectedData.experience} ${selectedData.category} ${selectedData.subCategory}, ${selectedData.skills} ${selectedData.requirements} ${selectedData.salaryRange} ${selectedData.socialBenefits}`;
 
     setIsLoading(true);
     const res = await fetch(`/api/create-offer/`, {
@@ -153,7 +139,25 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
     const resJson = await res.json();
     setOffer(resJson);
 
-    router.push("/generate-offer/description");
+    router.push("/offer");
+
+    setIsLoading(false);
+  };
+
+  const checkOffer = async (prompt: string) => {
+    setIsLoading(true);
+    const res = await fetch(`/api/check-offer/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        value: prompt,
+      }),
+    });
+
+    const resJson = await res.json();
+    setOfferRecommendations(JSON.parse(resJson));
 
     setIsLoading(false);
   };
@@ -162,31 +166,16 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
     <OfferContext.Provider
       value={{
         offer,
-        salaryFrom,
-        setSalaryRangeFrom,
-        salaryUntil,
-        setSalaryRangeUntil,
-        offerName,
-        setOfferName,
-        experience,
-        setExperience,
-        categorySelected,
-        setCategorySelected,
-        subCategorySelected,
-        setSubCategorySelected,
+        setOffer,
         skillSelected,
         setSkillSelected,
-        requirements,
-        setRequirements,
-        modality,
-        setModality,
-        socialBenefits,
-        setSocialBenefits,
         categories,
         salaryRange,
         createOffer,
         isLoading,
         setIsLoading,
+        checkOffer,
+        offerReccomendations,
       }}
     >
       {children}

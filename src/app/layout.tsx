@@ -3,7 +3,7 @@
 import "./globals.css";
 import { Titillium_Web } from "next/font/google";
 import { OfferProvider } from "./hooks/OfferProvider";
-import { Loading } from "./components/loading-description/loading";
+import { Loading } from "./components/loading/loading";
 
 const titilium = Titillium_Web({
   weight: "400",

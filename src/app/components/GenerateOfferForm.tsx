@@ -8,38 +8,73 @@ import {
   MultiSelectBox,
   MultiSelectBoxItem,
   Divider,
+  Text,
+  Callout,
 } from "@tremor/react";
 import { TextInput } from "@tremor/react";
-import { TextArea } from "../components/Textarea";
 import { useEffect, useState } from "react";
 import { useOfferContext } from "../hooks/OfferProvider";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import TextArea from "./Textarea";
+import { InformationCircleIcon, ArrowLeftIcon } from "@heroicons/react/solid";
+import { useRouter } from "next/navigation";
+
+type FormData = {
+  offerName: string;
+  category: string;
+  experience: string;
+  subCategory: string;
+  requirements: string;
+  minSalaryRange: string;
+  maxSalaryRange: string;
+  modality: string;
+  socialBenefits: string;
+};
+
+const schema = yup.object().shape({
+  offerName: yup.string().required("Nombre del puesto es requerido"),
+  experience: yup.string().required("La experiencia es requerida"),
+  category: yup.string().required(),
+  subCategory: yup.string().required(),
+  maxSalaryRange: yup.string().required(),
+  minSalaryRange: yup.string().required(),
+  modality: yup.string().required(),
+  requirements: yup
+    .string()
+    .required(
+      "Ofrece algún tipo de información para afinar la definición de la oferta"
+    ),
+  socialBenefits: yup.string(),
+});
 
 export const GenerateOfferForm = () => {
+  const router = useRouter();
+
   const {
     categories,
     salaryRange,
     createOffer,
-    offerName,
-    setOfferName,
-    experience,
-    setExperience,
-    categorySelected,
-    setCategorySelected,
-    subCategorySelected,
-    setSubCategorySelected,
     skillSelected,
     setSkillSelected,
-    requirements,
-    setRequirements,
-    modality,
-    setModality,
-    socialBenefits,
-    setSocialBenefits,
-    salaryFrom,
-    setSalaryRangeFrom,
-    salaryUntil,
-    setSalaryRangeUntil,
   } = useOfferContext();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+  });
+
+  const [minSalaryRange, categorySelected, subCategorySelected] = watch([
+    "minSalaryRange",
+    "category",
+    "subCategory",
+  ]);
 
   const [subCategoryList, setSubCategoryList] = useState([]) as any;
   const [skills, setSkillsList] = useState<[]>([]);
@@ -47,18 +82,12 @@ export const GenerateOfferForm = () => {
   const [salaryUntilList, setSalaryUntilList] = useState<[]>([]);
 
   useEffect(() => {
-    if (categories.length) {
-      setCategorySelected(categories[0].id);
-    }
-  }, [categories, setCategorySelected]);
-
-  useEffect(() => {
     setSalaryFromList(salaryRange);
   }, [salaryRange]);
 
   useEffect(() => {
     const salaryFromObject = salaryRange.find((salary: any) => {
-      if (salary.key === salaryFrom) {
+      if (salary.key === minSalaryRange) {
         return salary;
       }
     });
@@ -71,7 +100,7 @@ export const GenerateOfferForm = () => {
     } else {
       setSalaryUntilList(salaryRange);
     }
-  }, [salaryRange, salaryFrom]);
+  }, [salaryRange, minSalaryRange]);
 
   useEffect(() => {
     const category = categories.find(
@@ -80,10 +109,10 @@ export const GenerateOfferForm = () => {
 
     if (category) {
       setSubCategoryList(category.subcategories);
-      setSubCategorySelected(category.subcategories[0].id);
+      setValue("subCategory", category.subcategories[0].id);
       setSkillSelected([]);
     }
-  }, [categories, categorySelected, setSubCategorySelected, setSkillSelected]);
+  }, [categories, categorySelected, setValue, setSkillSelected]);
 
   useEffect(() => {
     const subCategory = subCategoryList.find(
@@ -96,80 +125,111 @@ export const GenerateOfferForm = () => {
     }
   }, [subCategoryList, subCategorySelected, setSkillSelected]);
 
+  const onSubmit = async (data: any) => await createOffer(data);
+
   return (
     <div className="p-12 transition">
-      <Card className="max-w-6xl mx-auto">
-        <div className="flex flex-col gap-6 items-center justify-center">
-          <div className="w-full">
-            <TextInput
-              onChange={(e) => setOfferName(e.target.value)}
-              value={offerName}
-              // error
-              // errorMessage="Obligatorio"
-              placeholder="Puesto de trabajo"
-            />
+      <Card className="max-w-4xl mx-auto">
+        <Button
+          onClick={() => router.back()}
+          variant="light"
+          icon={ArrowLeftIcon}
+        >
+          Volver
+        </Button>
+        <div className="flex flex-col gap-2">
+          <Text className="text-xl">
+            Genera una oferta de trabajo en base a tus necesidades y requisitos.
+          </Text>
+          <Callout
+            icon={InformationCircleIcon}
+            title="Rellena los campos necesarios para obtener una oferta"
+            color="blue"
+          >
+            ¡Recuerda! Cuanta más información proporciones mejor será la oferta
+          </Callout>
+        </div>
+        <Divider />
+        <Text className="text-lg">Requisitos mínimos del candidato</Text>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-6 mt-6 items-center justify-center"
+        >
+          <div className="w-full flex items-start gap-6">
+            <div className="w-full">
+              <TextInput
+                {...register("offerName")}
+                error={!!errors.offerName}
+                errorMessage={errors?.offerName?.message as string}
+                placeholder="Desarrollador web"
+              />
+            </div>
+            <div className="w-full">
+              <TextInput
+                {...register("experience")}
+                placeholder="Experiencia mínima"
+              />
+            </div>
           </div>
-          <TextInput
-            onChange={(e) => setExperience(e.target.value)}
-            value={experience}
-            placeholder="Experiencia mínima"
-          />
-
-          <SelectBox
-            value={categorySelected}
-            onValueChange={(value) => setCategorySelected(value)}
-            placeholder="Categoría"
-          >
-            {categories.map((category: any) => {
-              return (
-                <SelectBoxItem
-                  key={category.id}
-                  value={category.id}
-                  text={category.name}
-                />
-              );
-            })}
-          </SelectBox>
-          <SelectBox
-            value={subCategorySelected}
-            onValueChange={setSubCategorySelected}
-            placeholder="Subcategoría"
-          >
-            {subCategoryList.map((subCategory: any) => {
-              return (
-                <SelectBoxItem
-                  key={subCategory.id}
-                  value={subCategory.id}
-                  text={subCategory.name}
-                />
-              );
-            })}
-          </SelectBox>
-          <MultiSelectBox
-            onValueChange={(value) => setSkillSelected(value)}
-            value={skillSelected}
-            placeholder="Conocimientos requeridos"
-          >
-            {skills.map((skill: any) => {
-              return (
-                <MultiSelectBoxItem
-                  key={skill.id}
-                  value={skill.id}
-                  text={skill.name}
-                />
-              );
-            })}
-          </MultiSelectBox>
-          <TextArea
-            value={requirements}
-            placeholder="Requisitos específicos de la empresa"
-            onChange={(e) => setRequirements(e.target.value)}
-          />
-          <Divider />
           <div className="flex gap-6 w-full">
             <SelectBox
-              value={salaryFrom}
-              onValueChange={setSalaryRangeFrom}
+              {...register("category")}
+              onValueChange={(value) => setValue("category", value)}
+              placeholder="Categoría"
+            >
+              {categories.map((category: any) => {
+                return (
+                  <SelectBoxItem
+                    key={category.id}
+                    value={category.id}
+                    text={category.name}
+                  />
+                );
+              })}
+            </SelectBox>
+            <SelectBox
+              {...register("subCategory")}
+              onValueChange={(value) => setValue("subCategory", value)}
+              placeholder="Subcategoría"
+            >
+              {subCategoryList.map((subCategory: any) => {
+                return (
+                  <SelectBoxItem
+                    key={subCategory.id}
+                    value={subCategory.id}
+                    text={subCategory.name}
+                  />
+                );
+              })}
+            </SelectBox>
+            <MultiSelectBox
+              onValueChange={(value) => setSkillSelected(value)}
+              value={skillSelected}
+              placeholder="Conocimientos requeridos"
+            >
+              {skills.map((skill: any) => {
+                return (
+                  <MultiSelectBoxItem
+                    key={skill.id}
+                    value={skill.id}
+                    text={skill.name}
+                  />
+                );
+              })}
+            </MultiSelectBox>
+          </div>
+          <TextArea
+            {...register("requirements")}
+            placeholder="Requisitos específicos de la empresa"
+          />
+          <Divider />
+          <Text className="w-full text-lg text-left">
+            Oferta hacia el candidato
+          </Text>
+          <div className="flex gap-6 w-full">
+            <SelectBox
+              {...register("minSalaryRange")}
+              onValueChange={(value) => setValue("minSalaryRange", value)}
               placeholder="Rango salarial desde"
             >
               {salaryFromList.map((salary: any) => {
@@ -183,8 +243,8 @@ export const GenerateOfferForm = () => {
               })}
             </SelectBox>
             <SelectBox
-              value={salaryUntil}
-              onValueChange={setSalaryRangeUntil}
+              {...register("maxSalaryRange")}
+              onValueChange={(value) => setValue("maxSalaryRange", value)}
               placeholder="Rango salarial hasta"
             >
               {salaryUntilList.map((salary: any) => {
@@ -199,8 +259,8 @@ export const GenerateOfferForm = () => {
             </SelectBox>
           </div>
           <SelectBox
-            onValueChange={setModality}
-            value={modality}
+            {...register("modality")}
+            onValueChange={(value) => setValue("modality", value)}
             placeholder="Modalidad"
           >
             <SelectBoxItem value={"Hibrido"} text="Hibrido" />
@@ -208,18 +268,13 @@ export const GenerateOfferForm = () => {
             <SelectBoxItem value={"Oficina"} text="Oficina" />
           </SelectBox>
           <TextArea
-            value={socialBenefits}
+            {...register("socialBenefits")}
             placeholder="Beneficios sociales, seguro médico, plan de carrera adaptado..."
-            onChange={(e) => setSocialBenefits(e.target.value)}
           />
-          <Button
-            onClick={() => createOffer()}
-            loading={false}
-            className="self-end"
-          >
+          <Button type="submit" loading={false} className="self-end">
             Generar oferta
           </Button>
-        </div>
+        </form>
       </Card>
     </div>
   );

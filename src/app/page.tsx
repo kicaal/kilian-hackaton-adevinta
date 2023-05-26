@@ -27,22 +27,13 @@ export default function Home() {
               <Image src="/generateoffer.svg" width={100} height={100} alt="" />
               Generar oferta
             </Card>
-            {/* CORREGIR OFERTA */}
             <Card
+              onClick={() => router.push("/offer")}
               role="button"
               className="w-56 h-56 flex flex-col gap-5 justify-center items-center"
             >
               <Image src="/evaluateoffer.svg" width={100} height={100} alt="" />
               Corregir oferta
-            </Card>
-
-            {/* Sacar media salarial entre todas las ofertas que hay publicadas por puesto de trabajo */}
-            <Card
-              role="button"
-              className="w-56 h-56 flex flex-col gap-5 justify-center items-center"
-            >
-              <Image src="/salary.svg" width={100} height={100} alt="" />
-              Media salarial
             </Card>
           </div>
         </div>

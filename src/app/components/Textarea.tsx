@@ -1,26 +1,30 @@
 "use client";
 
-import { ChangeEventHandler, FC } from "react";
+import { ChangeEventHandler, forwardRef } from "react";
 
 interface TextAreaProps {
-  value: string;
+  value?: string;
   placeholder?: string;
-  onChange: ChangeEventHandler<HTMLTextAreaElement>;
+  rows?: number;
+  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
 }
 
-export const TextArea: FC<TextAreaProps> = ({
-  value,
-  placeholder,
-  onChange,
-}) => {
-  return (
+type Ref = HTMLTextAreaElement;
+
+const TextArea = forwardRef<Ref, TextAreaProps>(
+  ({ placeholder, value, onChange, rows = 4, ...props }, ref) => (
     <textarea
-      id="message"
+      {...props}
+      ref={ref}
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      rows={4}
-      className="text-sm w-full pl-4 pr-4 py-2 focus:outline-none focus:ring-2 bg-white hover:bg-gray-50 text-gray-500 border-gray-300 focus:ring-blue-200 rounded-md border shadow-sm"
-    ></textarea>
-  );
-};
+      rows={rows}
+      className="text-sm w-full h-full pl-4 pr-4 py-2 focus:outline-none focus:ring-2 bg-white hover:bg-gray-50 text-gray-500 border-gray-300 focus:ring-blue-200 rounded-md border shadow-sm"
+    />
+  )
+);
+
+TextArea.displayName = "TextArea";
+
+export default TextArea;
