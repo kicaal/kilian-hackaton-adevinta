@@ -32,11 +32,26 @@ export default function Landing() {
   return (
     <PageWrapper>
       <header className="flex justify-between bg-white p-6">
-        <Image src="/infojobs.svg" width={150} height={150} alt="" />
+        <Image
+          role="button"
+          onClick={() => router.push("/")}
+          src="/infojobs.svg"
+          width={150}
+          height={150}
+          alt=""
+        />
         <a href="https://github.com/kicaal" target="_blank">
           <BsGithub size={30} />
         </a>
       </header>
+      <Button
+        className="p-4"
+        onClick={() => router.back()}
+        variant="light"
+        icon={ArrowLeftIcon}
+      >
+        <span className="text-xl">Volver</span>
+      </Button>
       {offerHtml && (
         <div className="flex justify-center my-4">
           <div className="flex gap-2 items-center py-2 px-4 border border-[#00A550] rounded-md">

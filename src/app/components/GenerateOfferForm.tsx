@@ -128,7 +128,7 @@ export const GenerateOfferForm = () => {
   const onSubmit = async (data: FormData) => await createOffer(data);
 
   return (
-    <div className="p-12 transition">
+    <div className="p-4 md:p-12 transition">
       <Card className="max-w-4xl mx-auto">
         <Button
           onClick={() => router.back()}
@@ -155,7 +155,7 @@ export const GenerateOfferForm = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-6 mt-6 items-center justify-center"
         >
-          <div className="w-full flex items-start gap-6">
+          <div className="w-full flex flex-col md:flex-row items-start gap-6">
             <div className="w-full">
               <TextInput
                 {...register("offerName")}
@@ -171,7 +171,7 @@ export const GenerateOfferForm = () => {
               />
             </div>
           </div>
-          <div className="flex gap-6 w-full">
+          <div className="flex flex-col md:flex-row gap-6 w-full">
             <SelectBox
               {...register("category")}
               onValueChange={(value) => setValue("category", value)}
@@ -228,7 +228,7 @@ export const GenerateOfferForm = () => {
           <Text className="w-full text-lg text-left">
             Oferta hacia el candidato
           </Text>
-          <div className="flex gap-6 w-full">
+          <div className="flex flex-col md:flex-row gap-6 w-full">
             <SelectBox
               {...register("minSalaryRange")}
               onValueChange={(value) => setValue("minSalaryRange", value)}
@@ -277,7 +277,11 @@ export const GenerateOfferForm = () => {
             {...register("socialBenefits")}
             placeholder="Beneficios sociales, seguro médico, plan de carrera adaptado..."
           />
-          <Button type="submit" loading={false} className="self-end">
+          <Button
+            type="submit"
+            loading={false}
+            className="w-full md:w-auto self-end"
+          >
             Generar oferta
           </Button>
         </form>

@@ -27,7 +27,7 @@ export const OfferForm = () => {
   }, [offer]);
 
   return (
-    <div className="p-12">
+    <div className="p-4 md:p-12">
       <Card className="max-w-6xl mx-auto">
         <Button
           onClick={() => router.back()}
@@ -79,21 +79,21 @@ export const OfferForm = () => {
               </div>
             </Callout>
           )}
-          <div className="flex justify-between items-end">
+          <div className="flex flex-col md:flex-row justify-between md:items-end">
             <div className="flex flex-col gap-1 justify-start">
               <Italic className="text-gray-400">
                 ¡Si no consigues sacar buena puntuación prueba a generarla
                 automaticamente!
               </Italic>
               <Button
-                className="self-start"
+                className="md:self-start"
                 loading={false}
                 onClick={() => router.push("/generate-offer")}
               >
                 Generar oferta
               </Button>
             </div>
-            <div className="flex gap-6 justify-end">
+            <div className="flex flex-col md:flex-row gap-6 md:justify-end mt-6 md:mt-0">
               <Button
                 disabled={!offer}
                 loading={false}

@@ -10,15 +10,15 @@ export default function Home() {
 
   return (
     <PageWrapper>
-      <main className="flex gap-10 min-h-screen flex-col items-center p-6">
+      <main className="flex flex-col gap-10 min-h-screen items-center p-6">
         <Image src="/infojobs.svg" width={150} height={150} alt="" />
 
         <div className="flex flex-col gap-10 self-center">
           <div className="flex flex-col items-center">
             <Image src="/hello.svg" width={150} height={150} alt="" />
-            <p className="text-center">Hola! Elige entre estas dos opciones</p>
+            <p className="text-center">¡Hola! Elige una de las opciones</p>
           </div>
-          <div className="flex gap-10 self-center">
+          <div className="flex flex-col md:flex-row gap-10 self-center">
             <Card
               role="button"
               onClick={() => router.push("/generate-offer")}

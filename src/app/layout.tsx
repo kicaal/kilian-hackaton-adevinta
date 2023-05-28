@@ -10,11 +10,6 @@ const titilium = Titillium_Web({
   subsets: ["latin"],
 });
 
-// export const metadata = {
-//   title: "Hackaton infojobs",
-//   description: "Generador ofertas",
-// };
-
 export default function RootLayout({
   children,
 }: {
@@ -22,6 +17,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <title>Hackaton Infojobs</title>
+        <meta
+          name="description"
+          content="Generador de ofertas con IA. Corrector sobre la oferta generada o sobre una oferta escrita que proporciona una puntuación y recomendaciones para mejorar la oferta con IA. Generador de una landing de la oferta creada con IA."
+        />
+      </head>
       <body className={titilium.className}>
         <OfferProvider>
           <Loading />
