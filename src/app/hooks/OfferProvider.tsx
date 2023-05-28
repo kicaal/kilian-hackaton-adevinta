@@ -27,6 +27,7 @@ const OfferContext = createContext<{
     score: number;
     message: string;
   };
+  setOfferRecommendations: Function;
   setOffer: Function;
   convertToHtml: Function;
 }>({
@@ -41,6 +42,7 @@ const OfferContext = createContext<{
   setSkillSelected: () => {},
   setOffer: () => {},
   isLoading: false,
+  setOfferRecommendations: () => {},
   convertToHtml: () => {},
 });
 
@@ -209,6 +211,7 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoading,
         checkOffer,
         convertToHtml,
+        setOfferRecommendations,
         offerReccomendations,
       }}
     >

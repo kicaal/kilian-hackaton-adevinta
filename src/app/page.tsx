@@ -4,9 +4,12 @@ import Image from "next/image";
 import { Card } from "@tremor/react";
 import { useRouter } from "next/navigation";
 import { PageWrapper } from "./components/PageWrapper";
+import { useOfferContext } from "./hooks/OfferProvider";
 
 export default function Home() {
   const router = useRouter();
+
+  const { setOffer, setOfferRecommendations } = useOfferContext();
 
   return (
     <PageWrapper>
@@ -28,7 +31,11 @@ export default function Home() {
               Generar oferta
             </Card>
             <Card
-              onClick={() => router.push("/offer")}
+              onClick={() => {
+                setOffer("");
+                setOfferRecommendations({ score: 0, message: "" });
+                router.push("/offer");
+              }}
               role="button"
               className="w-56 h-56 flex flex-col gap-5 justify-center items-center"
             >

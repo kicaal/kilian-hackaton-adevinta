@@ -1,5 +1,7 @@
 ## About
 
+OPEN AI API is very slow, sorry for the inconvenience
+
 This application is specialized in that through the OPEN AI API
 
 - Generates a job offer based on basic parameters.
