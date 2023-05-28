@@ -172,7 +172,8 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     const resJson = await res.json();
-    setOfferRecommendations(JSON.parse(resJson));
+
+    setOfferRecommendations(resJson);
 
     setIsLoading(false);
   };

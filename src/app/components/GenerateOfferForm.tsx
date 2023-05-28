@@ -44,7 +44,7 @@ const schema = yup.object().shape({
   requirements: yup
     .string()
     .required(
-      "Ofrece algún tipo de información para afinar la definición de la oferta"
+      "Ofrece algún tipo de información específica de tu empresa para afinar la oferta"
     ),
   socialBenefits: yup.string(),
 });
@@ -167,6 +167,8 @@ export const GenerateOfferForm = () => {
             <div className="w-full">
               <TextInput
                 {...register("experience")}
+                error={!!errors.experience}
+                errorMessage={errors?.experience?.message as string}
                 placeholder="Experiencia mínima"
               />
             </div>
@@ -189,6 +191,7 @@ export const GenerateOfferForm = () => {
             </SelectBox>
             <SelectBox
               {...register("subCategory")}
+              value={subCategorySelected}
               onValueChange={(value) => setValue("subCategory", value)}
               placeholder="Subcategoría"
             >

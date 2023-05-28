@@ -14,7 +14,7 @@ const openai = new OpenAIApi(configuration)
 const INITIAL_MESSAGES = [
   {
     role: ChatCompletionRequestMessageRoleEnum.System,
-    content: `Quiero que cuando te pase una descripción de una oferta de trabajo en algún ambito, le des una nota del 1 al 10.
+    content: `Quiero que cuando te pase una descripción de una oferta de trabajo en algún ambito, le des una nota del 1 al 10 aunque tienes que ser muy estricto en cuanto con la nota que asignas, es decir, si no viene la información necesaría como los requisitios, una descripción y el salario consideramos que no es una buena oferta.
 
     El formato de respuesta JSON será el siguiente:
     
@@ -23,7 +23,7 @@ const INITIAL_MESSAGES = [
       "message": [message]
     }
     
-    Tienes que cambiar lo que hay entre corchetes por el valor. El máximo de caracteres permitido para "message" es de 300. Se conciso, estricto y directo. Apunta los errores clave, especialmente los de ortografía (si existiesen) o recomendaciones claras. Por ejemplo:
+    Tienes que cambiar lo que hay entre corchetes por el valor. El máximo de caracteres permitido para "message" es de 500. Se conciso y directo. Apunta los errores clave, especialmente los de ortografía (si existiesen) o recomendaciones claras. Por ejemplo:
     
     {
       "score": 6,
@@ -47,11 +47,12 @@ export async function POST(request: Request) {
     ]
   })
 
-
   try {
-    return NextResponse.json(completion.data.choices[0].message?.content ?? '');
+    return NextResponse.json(JSON.parse(completion.data.choices[0].message?.content as string));
   } catch {
-    return new Response('No se ha podido transformar el JSON', { status: 500 })
+    return NextResponse.json({
+      score: 0,
+      message: completion.data.choices[0].message?.content
+    });
   }
-
 }
