@@ -39,7 +39,13 @@ export const OfferForm = () => {
           Volver
         </Button>
         <div className="flex flex-col gap-6">
-          <Text className="text-lg">Validación de oferta</Text>
+          <div>
+            <Text className="text-lg">Validación de oferta</Text>
+            <Text>
+              ¡Escribe aquí si ya tienes tu oferta laboral preparada y la
+              quieres mejorar!
+            </Text>
+          </div>
           <div className="flex flex-col gap-1">
             <TextArea
               rows={rows}
@@ -95,7 +101,13 @@ export const OfferForm = () => {
               >
                 Corregir oferta
               </Button>
-              <Button loading={false}>Postular oferta en Infojobs</Button>
+              <Button
+                disabled={!offer}
+                onClick={() => router.push("/landing")}
+                loading={false}
+              >
+                Postular oferta en Infojobs
+              </Button>
             </div>
           </div>
         </div>

@@ -1,6 +1,18 @@
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
+type FormData = {
+  offerName: string;
+  category: string;
+  experience: string;
+  subCategory: string;
+  requirements: string;
+  minSalaryRange: string;
+  maxSalaryRange: string;
+  modality: string;
+  socialBenefits: string;
+};
+
 const OfferContext = createContext<{
   offer: string;
   categories: any;
@@ -16,6 +28,7 @@ const OfferContext = createContext<{
     message: string;
   };
   setOffer: Function;
+  convertToHtml: Function;
 }>({
   offer: "",
   offerReccomendations: { score: 0, message: "" },
@@ -28,6 +41,7 @@ const OfferContext = createContext<{
   setSkillSelected: () => {},
   setOffer: () => {},
   isLoading: false,
+  convertToHtml: () => {},
 });
 
 export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
@@ -77,7 +91,7 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
     loadData();
   }, []);
 
-  const createOffer = async (data: any) => {
+  const createOffer = async (data: FormData) => {
     const {
       offerName,
       category: categorySelected,
@@ -137,6 +151,7 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     const resJson = await res.json();
+
     setOffer(resJson);
 
     router.push("/offer");
@@ -162,6 +177,23 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(false);
   };
 
+  const convertToHtml = async () => {
+    setIsLoading(true);
+    const res = await fetch(`/api/convert-to-html/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        value: offer,
+      }),
+    });
+
+    const resJson = await res.json();
+    setIsLoading(false);
+    return resJson;
+  };
+
   return (
     <OfferContext.Provider
       value={{
@@ -175,6 +207,7 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
         isLoading,
         setIsLoading,
         checkOffer,
+        convertToHtml,
         offerReccomendations,
       }}
     >

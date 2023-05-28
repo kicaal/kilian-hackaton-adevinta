@@ -125,7 +125,7 @@ export const GenerateOfferForm = () => {
     }
   }, [subCategoryList, subCategorySelected, setSkillSelected]);
 
-  const onSubmit = async (data: any) => await createOffer(data);
+  const onSubmit = async (data: FormData) => await createOffer(data);
 
   return (
     <div className="p-12 transition">
@@ -177,7 +177,7 @@ export const GenerateOfferForm = () => {
               onValueChange={(value) => setValue("category", value)}
               placeholder="Categoría"
             >
-              {categories.map((category: any) => {
+              {categories.map((category: { id: string; name: string }) => {
                 return (
                   <SelectBoxItem
                     key={category.id}
@@ -192,22 +192,24 @@ export const GenerateOfferForm = () => {
               onValueChange={(value) => setValue("subCategory", value)}
               placeholder="Subcategoría"
             >
-              {subCategoryList.map((subCategory: any) => {
-                return (
-                  <SelectBoxItem
-                    key={subCategory.id}
-                    value={subCategory.id}
-                    text={subCategory.name}
-                  />
-                );
-              })}
+              {subCategoryList.map(
+                (subCategory: { id: string; name: string }) => {
+                  return (
+                    <SelectBoxItem
+                      key={subCategory.id}
+                      value={subCategory.id}
+                      text={subCategory.name}
+                    />
+                  );
+                }
+              )}
             </SelectBox>
             <MultiSelectBox
               onValueChange={(value) => setSkillSelected(value)}
               value={skillSelected}
               placeholder="Conocimientos requeridos"
             >
-              {skills.map((skill: any) => {
+              {skills.map((skill: { id: string; name: string }) => {
                 return (
                   <MultiSelectBoxItem
                     key={skill.id}
@@ -232,30 +234,34 @@ export const GenerateOfferForm = () => {
               onValueChange={(value) => setValue("minSalaryRange", value)}
               placeholder="Rango salarial desde"
             >
-              {salaryFromList.map((salary: any) => {
-                return (
-                  <SelectBoxItem
-                    key={salary.id}
-                    value={salary.key}
-                    text={salary.value}
-                  />
-                );
-              })}
+              {salaryFromList.map(
+                (salary: { id: string; key: string; value: string }) => {
+                  return (
+                    <SelectBoxItem
+                      key={salary.id}
+                      value={salary.key}
+                      text={salary.value}
+                    />
+                  );
+                }
+              )}
             </SelectBox>
             <SelectBox
               {...register("maxSalaryRange")}
               onValueChange={(value) => setValue("maxSalaryRange", value)}
               placeholder="Rango salarial hasta"
             >
-              {salaryUntilList.map((salary: any) => {
-                return (
-                  <SelectBoxItem
-                    key={salary.id}
-                    value={salary.key}
-                    text={salary.value}
-                  />
-                );
-              })}
+              {salaryUntilList.map(
+                (salary: { id: string; key: string; value: string }) => {
+                  return (
+                    <SelectBoxItem
+                      key={salary.id}
+                      value={salary.key}
+                      text={salary.value}
+                    />
+                  );
+                }
+              )}
             </SelectBox>
           </div>
           <SelectBox
