@@ -135,7 +135,7 @@ export const OfferProvider = ({ children }: { children: React.ReactNode }) => {
       salaryRange: `el rango salarial es de entre ${minSalaryRange}€ y ${maxSalaryRange}€`,
       modality: `modalidad ${modality}`,
       socialBenefits: socialBenefits
-        ? `como benificios sociales ${socialBenefits}`
+        ? `como benificios sociales o cultura de empresa ${socialBenefits}`
         : "",
     };
 
