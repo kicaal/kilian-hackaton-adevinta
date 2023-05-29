@@ -128,7 +128,7 @@ export const GenerateOfferForm = () => {
   const onSubmit = async (data: FormData) => await createOffer(data);
 
   return (
-    <div className="p-4 md:p-12 transition">
+    <div className="p-4 md:p-8">
       <Card className="max-w-4xl mx-auto">
         <Button
           onClick={() => router.back()}
@@ -227,8 +227,8 @@ export const GenerateOfferForm = () => {
             {...register("requirements")}
             placeholder="Requisitos específicos de la empresa"
           />
-          <Divider />
-          <Text className="w-full text-lg text-left">
+          <Divider className="!my-0" />
+          <Text className="w-full text-lg text-left leading-4">
             Oferta hacia el candidato
           </Text>
           <div className="flex flex-col md:flex-row gap-6 w-full">
@@ -278,7 +278,7 @@ export const GenerateOfferForm = () => {
           </SelectBox>
           <TextArea
             {...register("socialBenefits")}
-            placeholder="Beneficios sociales, seguro médico, plan de carrera adaptado..."
+            placeholder="Cultura de empresa, beneficios sociales, seguro médico, plan de carrera adaptado..."
           />
           <Button
             type="submit"
