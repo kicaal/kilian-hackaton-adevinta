@@ -13,8 +13,13 @@ import { useRouter } from "next/navigation";
 export const OfferForm = () => {
   const router = useRouter();
 
-  const { offer, setOffer, checkOffer, offerReccomendations } =
-    useOfferContext();
+  const {
+    offer,
+    setOffer,
+    checkOffer,
+    offerReccomendations,
+    setOfferRecommendations,
+  } = useOfferContext();
 
   const [rows, setRows] = useState<number>(10);
 
@@ -26,8 +31,14 @@ export const OfferForm = () => {
     }
   }, [offer]);
 
+  useEffect(() => {
+    return () => {
+      setOfferRecommendations("");
+    };
+  }, []);
+
   return (
-    <div className="p-4 md:p-12">
+    <div className="p-4 md:p-8">
       <Card className="max-w-6xl mx-auto">
         <Button
           onClick={() => router.back()}
