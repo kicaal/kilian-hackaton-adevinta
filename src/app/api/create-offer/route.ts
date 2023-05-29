@@ -14,7 +14,7 @@ const openai = new OpenAIApi(configuration)
 const INITIAL_MESSAGES = [
   {
     role: ChatCompletionRequestMessageRoleEnum.System,
-    content: `Quiero que cuando te pase un texto generes una oferta de trabajo elaborada, en la oferta debe aparecer todo lo que aparece en el texto, la oferta se debe componer descripción de la posición, responsabilidades, requisitos, perfil ideal del candidato, Ofrecemos y añadir un texto de despedida de oferta`
+    content: `Quiero que cuando te pase un texto generes una oferta de trabajo elaborada, en la oferta debe aparecer todo lo que aparece en el texto, la oferta se debe componer descripción de la posición, responsabilidades, requisitos, perfil ideal del candidato, Ofrecemos y añadir un texto de despedida de oferta, todo esto debes modificar las responsabilidades, requisitos, perfil del candidato y lo que se ofrece para hacer una oferta más cercana y agradable`
   }
 ]
 

@@ -19,11 +19,11 @@ const INITIAL_MESSAGES = [
     El formato de respuesta JSON será el siguiente:
     
     {
-      "score": [score],
-      "message": [message]
+      "score": {score},
+      "message": {message}
     }
     
-    Tienes que cambiar lo que hay entre corchetes por el valor. El máximo de caracteres permitido para "message" es de 500. Se conciso y directo. Apunta los errores clave, especialmente los de ortografía (si existiesen) o recomendaciones claras. Por ejemplo:
+    Tienes que cambiar lo que hay entre llaves por el valor. El máximo de caracteres permitido para "message" es de 500. Se conciso y directo. Apunta los errores clave, especialmente los de ortografía (si existiesen) o recomendaciones claras. Por ejemplo:
     
     {
       "score": 6,

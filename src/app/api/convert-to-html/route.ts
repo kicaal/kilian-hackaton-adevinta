@@ -14,7 +14,7 @@ const openai = new OpenAIApi(configuration)
 const INITIAL_MESSAGES = [
   {
     role: ChatCompletionRequestMessageRoleEnum.System,
-    content: `Quiero que cuando te pase un texto me lo devuelvas convertido en html sin estilar y semánticamente correcto, también quiero que pongas como h3 los titulos de las secciones`
+    content: `Quiero que cuando te pase un texto me lo devuelvas convertido en html sin estilar y semánticamente correcto, también quiero que detectes las secciones y pongas los tiítulos como h3 si tiene`
   }
 ]
 
