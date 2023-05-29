@@ -8,13 +8,13 @@ This application is specialized in that through the OPEN AI API
 - Correct the generated offer to provide, for example, a specific description of the company offering the offer. This correction provides a score and a recommendation on what should be modified.
 - Generates a landing based on the offer generated.
 
-## Install
+### Install
 
 ```bash
 npm install
 ```
 
-## Run
+### Run
 
 ```bash
 npm run dev
