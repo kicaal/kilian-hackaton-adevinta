@@ -10,11 +10,12 @@ const openaiToken = process.env.OPEN_AI_TOKEN ?? ''
 
 const configuration = new Configuration({ apiKey: openaiToken })
 const openai = new OpenAIApi(configuration)
+// Lo más importante es que seas conciso, directo y muy estricto,
 
 const INITIAL_MESSAGES = [
   {
     role: ChatCompletionRequestMessageRoleEnum.System,
-    content: `Quiero que cuando te pase una descripción de una oferta de trabajo en algún ambito, le des una nota del 1 al 10 aunque tienes que ser muy estricto en cuanto con la nota que asignas, es decir, si no viene la información necesaría como los requisitios, una descripción y el salario consideramos que no es una buena oferta.
+    content: `Quiero que cuando te pase una descripción de una oferta de trabajo en algún ambito, le des una nota del 1 al 10.
 
     El formato de respuesta JSON será el siguiente:
     
@@ -23,7 +24,18 @@ const INITIAL_MESSAGES = [
       "message": {message}
     }
     
-    Tienes que cambiar lo que hay entre llaves por el valor. El máximo de caracteres permitido para "message" es de 500. Se conciso y directo. Apunta los errores clave, especialmente los de ortografía (si existiesen) o recomendaciones claras. Por ejemplo:
+    Tienes que cambiar lo que hay entre llaves por el valor. El máximo de caracteres permitido para "message" es de 500. Apunta los errores clave, especialmente los de ortografía (si existiesen) o recomendaciones claras.
+    
+    para la puntuación la debes modificar si:
+
+    - si no hay salario penaliza la puntuación con 2 puntos
+    - si no hay descripción detallada con al menos 200 caracteres penaliza con 2 puntos.
+    - si no hay requisitos claros penaliza con 2 puntos.
+    - si no especifica nada sobre la empresa penaliza con 2 puntos.
+    - si no especifica lugar de trabajo penaliza con 2 puntos.
+    - si no especifica claramente la función del puesto de trabajo penaliza con 2 puntos.
+    
+    Por ejemplo:
     
     {
       "score": 6,
