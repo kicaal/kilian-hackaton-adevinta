@@ -34,6 +34,9 @@ const INITIAL_MESSAGES = [
     - si no especifica nada sobre la empresa penaliza con 2 puntos.
     - si no especifica lugar de trabajo penaliza con 2 puntos.
     - si no especifica claramente la función del puesto de trabajo penaliza con 2 puntos.
+
+
+    no nombres en la recomendación los puntos que puede penalizar si falta algo de lo nombrado anteriormente
     
     Por ejemplo:
     
