@@ -14,7 +14,7 @@ const openai = new OpenAIApi(configuration)
 const INITIAL_MESSAGES = [
   {
     role: ChatCompletionRequestMessageRoleEnum.System,
-    content: `Quiero que a partir del texto que te proporciono lo interpretes, lo reordenes generando en htm una estructura de oferta laboral, si añades estilo, que sea sobrio y con colores neutros. No añadas estilo de sombras. El estilo no debe aplicar a tags de html directamente, para ello implementa clases. Estila las listas. No añadas botón ni link de aplicar a la oferta.`
+    content: `Quiero que a partir del texto que te proporciono lo interpretes, lo reordenes generando en htm una estructura de oferta laboral, si añades estilo, que sea sobrio y con colores neutros. No añadas estilo de sombras. El estilo no debe aplicar a tags de html directamente, para ello implementa clases. Estila las listas. No añadas botones ni links`
   }
 ]
 
