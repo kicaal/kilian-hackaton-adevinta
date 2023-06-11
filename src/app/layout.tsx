@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Hackaton Infojobs</title>
+        <title>Infojobs AI job offer generator</title>
         <meta
           name="description"
           content="Generador de ofertas con IA. Corrector sobre la oferta generada o sobre una oferta escrita que proporciona una puntuación y recomendaciones para mejorar la oferta con IA. Generador de una landing de la oferta creada con IA."
