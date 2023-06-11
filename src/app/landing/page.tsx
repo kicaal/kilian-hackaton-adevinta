@@ -55,7 +55,7 @@ export default function Landing() {
       {offerHtml && (
         <div className="flex justify-center my-4">
           <div className="flex gap-2 items-center py-2 px-4 border border-[#00A550] rounded-md">
-            <p className="">¡Oferta postulada con exito!</p>
+            <span>¡Oferta postulada con exito!</span>
             <CheckCircleIcon className="text-[#00A550] w-6" />
           </div>
         </div>
